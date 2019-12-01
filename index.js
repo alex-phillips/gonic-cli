@@ -2,6 +2,7 @@ const got = require('got');
 const {CookieJar} = require('tough-cookie');
 const FormData = require('form-data');
 const fs = require('fs');
+const ini = require('ini');
 
 const args = require('gar')(process.argv.slice(2))
 const config = ini.parse(fs.readFileSync(`${__dirname}/config.ini`, 'utf8')).auth;
@@ -30,10 +31,11 @@ const config = ini.parse(fs.readFileSync(`${__dirname}/config.ini`, 'utf8')).aut
       break;
 
     case 'import':
-      const playlistFile = args._[1]
-
       form = new FormData();
-      form.append('playlist-files', fs.createReadStream(playlistFile));
+      for (let i = 1; i < args._.length; i++) {
+        console.log(`Importing ${args._[i]}`)
+        form.append('playlist-files', fs.createReadStream(args._[i]));
+      }
 
       await got.post('https://gonic.w00t.cloud/admin/upload_playlist_do', {
         cookieJar,
