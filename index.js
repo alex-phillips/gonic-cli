@@ -31,16 +31,16 @@ const config = ini.parse(fs.readFileSync(`${__dirname}/config.ini`, 'utf8')).aut
       break;
 
     case 'import':
-      form = new FormData();
       for (let i = 1; i < args._.length; i++) {
         console.log(`Importing ${args._[i]}`)
+        form = new FormData();
         form.append('playlist-files', fs.createReadStream(args._[i]));
-      }
 
-      await got.post('https://gonic.w00t.cloud/admin/upload_playlist_do', {
-        cookieJar,
-        body: form,
-      })
+        await got.post('https://gonic.w00t.cloud/admin/upload_playlist_do', {
+          cookieJar,
+          body: form,
+        });
+      }
       break;
 
     default:
