@@ -3,6 +3,7 @@ const {CookieJar} = require('tough-cookie');
 const FormData = require('form-data');
 const fs = require('fs');
 const ini = require('ini');
+const path = require('path');
 
 const args = require('gar')(process.argv.slice(2))
 const config = ini.parse(fs.readFileSync(`${__dirname}/config.ini`, 'utf8')).auth;
@@ -50,12 +51,11 @@ const config = ini.parse(fs.readFileSync(`${__dirname}/config.ini`, 'utf8')).aut
 
 function printUsage() {
   console.log(`
-${process.argv[1]}
+${path.basename(process.argv[1])} <command>
 
 commands:
-
-scan    Perform a library scan
-import  Import playlist m3u8 file
+  scan      Perform a library scan
+  import    Import playlist m3u8 file
 
 `);
 
