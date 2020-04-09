@@ -24,6 +24,8 @@ const config = ini.parse(fs.readFileSync(`${__dirname}/config.ini`, 'utf8')).aut
     body: form,
   });
 
+  console.log('Successfully logged in!');
+
   switch(args._[0]) {
     case 'scan':
       await got.get('https://gonic.w00t.cloud/admin/start_scan_do', {
@@ -35,7 +37,9 @@ const config = ini.parse(fs.readFileSync(`${__dirname}/config.ini`, 'utf8')).aut
       for (let i = 1; i < args._.length; i++) {
         console.log(`Importing ${args._[i]}`)
         form = new FormData();
-        form.append('playlist-files', fs.createReadStream(args._[i]));
+        form.append('playlist-files', fs.createReadStream(args._[i]), {
+          contentType: 'audio/x-mpegurl'
+        });
 
         await got.post('https://gonic.w00t.cloud/admin/upload_playlist_do', {
           cookieJar,
